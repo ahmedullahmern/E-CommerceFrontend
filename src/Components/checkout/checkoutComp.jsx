@@ -1,6 +1,9 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
 import { CartContext } from '../../context/AddCartContext';
+import { Link } from 'react-router-dom';
+import Cookies from "js-cookie"
+import { toast } from 'react-toastify';
 
 export default function CheckoutPage() {
     const { cart, removeItem, updateQty } = useContext(CartContext);
@@ -11,7 +14,11 @@ export default function CheckoutPage() {
     const totalAmount = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
     const handlePlaceOrder = async () => {
+        const token = Cookies.get("token")
         if (!address) return alert('Please enter your address');
+        if (!token) {
+            return toast.warning("Please login to continue")
+        }
         if (cart.length === 0) return alert('Cart is empty');
 
         const items = cart.map((item) => ({
@@ -23,16 +30,21 @@ export default function CheckoutPage() {
 
         try {
             setLoading(true);
-            const { data } = await axios.post('/api/order/place', {
+            const { data } = await axios.post('http://localhost:5000/api/order/place', {
                 items,
                 totalAmount,
                 address,
                 paymentMethod
-            });
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
             alert('Order Placed Successfully!');
         } catch (err) {
-            alert('Error placing order');
+            alert('Error placing order' + err);
         } finally {
             setLoading(false);
         }
@@ -40,45 +52,13 @@ export default function CheckoutPage() {
 
     return (
         <div className="max-w-4xl mx-auto p-4 grid gap-8 md:grid-cols-2">
-            {/* Cart Items */}
-            <div>
-                <h2 className="text-xl font-bold mb-4">Your Cart</h2>
-                {cart.length === 0 ? (
-                    <p className="text-gray-500">Cart is empty.</p>
-                ) : (
-                    <div className="space-y-4">
-                        {cart.map((item, index) => (
-                            <div key={index} className="p-4 border rounded-lg flex justify-between items-center">
-                                <div>
-                                    <h3 className="font-semibold">{item.name}</h3>
-                                    <p className="text-sm text-gray-600">Size: {item.size} | Qty: {item.qty}</p>
-                                    <p className="text-sm text-gray-600">Price: ${item.price}</p>
-                                </div>
-                                <div className="flex gap-2 items-center">
-                                    <button
-                                        onClick={() => updateQty(item._id, item.size, 'dec')}
-                                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                                    >-</button>
-                                    <span>{item.qty}</span>
-                                    <button
-                                        onClick={() => updateQty(item._id, item.size, 'inc')}
-                                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                                    >+</button>
-                                    <button
-                                        onClick={() => removeItem(item._id, item.size)}
-                                        className="px-3 py-1 bg-red-600 text-white hover:bg-red-700 rounded"
-                                    >Remove</button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                <div className="mt-4 text-lg font-semibold">Total: ${totalAmount.toFixed(2)}</div>
-            </div>
 
             {/* Checkout Form */}
             <div>
-                <h2 className="text-xl font-bold mb-4">Shipping & Payment</h2>
+                <div className='flex justify-between'>
+                    <h2 className="text-xl font-bold mb-4">Shipping & Payment</h2>
+                    <Link className='text-blue-500 hover:underline' to={"/login"}>Login</Link>
+                </div>
                 <div className="space-y-4">
                     <input
                         type="text"
@@ -124,6 +104,42 @@ export default function CheckoutPage() {
                     </button>
                 </div>
             </div>
+            {/* Cart Items */}
+            <div>
+                <h2 className="text-xl font-bold mb-4">Your Cart</h2>
+                {cart.length === 0 ? (
+                    <p className="text-gray-500">Cart is empty.</p>
+                ) : (
+                    <div className="space-y-4">
+                        {cart.map((item, index) => (
+                            <div key={index} className="p-4 border rounded-lg flex justify-between items-center">
+                                <div>
+                                    <h3 className="font-semibold">{item.name}</h3>
+                                    <p className="text-sm text-gray-600">Size: {item.size} | Qty: {item.qty}</p>
+                                    <p className="text-sm text-gray-600">Price: ${item.price}</p>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                    <button
+                                        onClick={() => updateQty(item._id, item.size, 'dec')}
+                                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                                    >-</button>
+                                    <span>{item.qty}</span>
+                                    <button
+                                        onClick={() => updateQty(item._id, item.size, 'inc')}
+                                        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                                    >+</button>
+                                    <button
+                                        onClick={() => removeItem(item._id, item.size)}
+                                        className="px-3 py-1 bg-red-600 text-white hover:bg-red-700 rounded"
+                                    >Remove</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <div className="mt-4 text-lg font-semibold">Total: ${totalAmount.toFixed(2)}</div>
+            </div>
+
         </div>
     );
 }

@@ -1,54 +1,154 @@
 import { useContext, useState } from "react";
-import { FaUserCircle, FaShoppingCart } from "react-icons/fa";
+import {
+    FaUserCircle,
+    FaShoppingCart,
+    FaBoxOpen,
+    FaSignOutAlt,
+    FaBars,
+    FaTimes,
+} from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext";
+import { CartContext } from "../../context/AddCartContext";
 import { toast } from "react-toastify";
-import Cookies from 'js-cookie'
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 function HeaderComp() {
-    const token = Cookies.get("token")
-    const { user, setUser } = useContext(AuthContext)
+    const token = Cookies.get("token");
+        const { user, setUser } = useContext(AuthContext);
+    const { cart } = useContext(CartContext);
+    const nav = useNavigate()
+
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const handleLogout = () => {
-        Cookies.remove("token")
-        toast.success("User Logout Successfully")
-        setUser(null)
+        Cookies.remove("token");
+        toast.success("User Logout Successfully", {
+            position: "top-center",
+        });
+        nav('/home')
+        setUser(null);
+        setMenuOpen(false);
     };
 
+    // agar user login hai aur role admin hai, to header na dikhayein
+    if (user && user.role === "admin") {
+        return null;
+    }
+
+
+    const cartQty = cart.reduce((acc, item) => acc + item.qty, 0);
+
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900">
-            <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-                {/* Left side: Logo */}
-                <a
-                    href="/home"
-                    className="flex items-center space-x-3 rtl:space-x-reverse"
-                >
+        <nav className="bg-white dark:bg-gray-900 shadow border-b">
+            <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
+                {/* Logo */}
+                <Link to="/home" className="flex items-center space-x-2">
                     <img
-                        src="https://flowbite.com/docs/images/logo.svg"
-                        className="h-8"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8VqtwXGkZ4Xr5oz7mDJO1HcU0TLiIVXn3fnaTpk_emZDepXFb7-NDkg4Igj-1SLLiqC0&usqp=CAU"
+                        className="h-[40px] w-[100px] object-cover rounded-full"
                         alt="Logo"
                     />
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                    <span className="text-lg font-bold text-gray-800 dark:text-white">
                         MyShop
                     </span>
-                </a>
+                </Link>
 
-                {/* Right side: User Icon, Cart Icon, Logout */}
-                <div className="flex items-center space-x-4">
-                    <Link to={"/login"}> <FaUserCircle className="text-2xl text-gray-700 dark:text-white cursor-pointer" /></Link>                    <FaShoppingCart className="text-2xl text-gray-700 dark:text-white cursor-pointer" />
+                {/* Hamburger Icon (Mobile Only) */}
+                <div className="md:hidden">
+                    <button
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        className="text-2xl text-gray-700 dark:text-white"
+                    >
+                        {menuOpen ? <FaTimes /> : <FaBars />}
+                    </button>
+                </div>
 
-                    {user && (
-                        <button
-                            onClick={handleLogout}
-                            className="border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white font-medium rounded-lg text-sm px-4 py-2"
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center gap-4">
+                    <Link to="/cart" className="relative">
+                        <FaShoppingCart className="text-2xl text-gray-800 dark:text-white" />
+                        {cartQty > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                {cartQty}
+                            </span>
+                        )}
+                    </Link>
+
+                    {!user ? (
+                        <Link
+                            to="/login"
+                            className="flex items-center gap-1 text-blue-700 dark:text-blue-400 hover:underline text-sm"
                         >
-                            Logout
-                        </button>
+                            <FaUserCircle className="text-xl" />
+                            <span>Login</span>
+                        </Link>
+                    ) : (
+                        <>
+                            <Link
+                                to="/myorders"
+                                className="flex items-center gap-1 text-sm border border-green-600 px-3 py-1 rounded text-green-600 hover:bg-green-600 hover:text-white transition"
+                            >
+                                <FaBoxOpen />
+                                <span>My Orders</span>
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-1 text-sm border border-red-600 px-3 py-1 rounded text-red-600 hover:bg-red-600 hover:text-white transition"
+                            >
+                                <FaSignOutAlt />
+                                <span>Logout</span>
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
+
+            {/* Mobile Dropdown Menu */}
+            {menuOpen && (
+                <div className="md:hidden px-4 pb-4 space-y-3">
+                    <Link
+                        to="/cart"
+                        className="flex items-center gap-2 text-gray-700 dark:text-white"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        <FaShoppingCart />
+                        Cart ({cartQty})
+                    </Link>
+
+                    {!user ? (
+                        <Link
+                            to="/login"
+                            className="flex items-center gap-2 text-blue-700 dark:text-blue-400"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            <FaUserCircle />
+                            Login
+                        </Link>
+                    ) : (
+                        <>
+                            <Link
+                                to="/myorders"
+                                className="flex items-center gap-2 text-green-700"
+                                onClick={() => setMenuOpen(false)}
+                            >
+                                <FaBoxOpen />
+                                My Orders
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 text-red-600"
+                            >
+                                <FaSignOutAlt />
+                                Logout
+                            </button>
+                        </>
+                    )}
+                </div>
+            )}
         </nav>
     );
 }
 
 export default HeaderComp;
+

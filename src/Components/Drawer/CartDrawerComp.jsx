@@ -2,6 +2,7 @@
 import { useContext } from 'react';
 import { FaTimes, FaPlus, FaMinus, FaTrash } from 'react-icons/fa';
 import { CartContext } from '../../context/AddCartContext';
+import { Link } from 'react-router-dom';
 
 const CartDrawerComp = () => {
     const { cart, updateQty, removeItem, isDrawerOpen, setIsDrawerOpen } = useContext(CartContext);
@@ -52,7 +53,9 @@ const CartDrawerComp = () => {
 
             <div className="p-4 border-t">
                 <p className="font-semibold">Total: {total} Rs</p>
-                <button className="w-full mt-2 bg-green-600 text-white py-2 rounded">Checkout</button>
+                <Link to={"/checkout"}>
+                    <button onClick={() => setIsDrawerOpen(false)} className="w-full mt-2 bg-green-600 text-white py-2 rounded">Checkout</button>
+                </Link>
             </div>
         </div>
     );

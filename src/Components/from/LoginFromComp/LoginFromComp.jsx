@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../constant/constant";
 import { toast } from 'react-toastify';
 import { AuthContext } from "../../../context/AuthContext";
@@ -10,6 +10,7 @@ import ButtonLoader from "../../Loader/ButtonLoader";
 const LoginFrom = () => {
     const [isLoading, setIsLoading] = useState(false);
     const buttonLoader = ButtonLoader()
+    const nav = useNavigate()
     const { setUser } = useContext(AuthContext)
     const handleLogin = (e) => {
         e.preventDefault()
@@ -28,10 +29,11 @@ const LoginFrom = () => {
             .then((res) => {
                 setIsLoading(false)
                 console.log("res in login==>", res?.data?.data?.user)
-                Cookies.set('token', res?.data?.data?.token)
+                Cookies.set('token', res?.data?.data?.token, { expires: 7 })
                 console.log("token he bhai", Cookies.get("token"))
                 setUser(res?.data?.data?.user)
                 toast.success("Login Successfully", { pauseOnHover: true })
+                nav("/home")
             }).catch((err) => {
                 setIsLoading(false)
                 console.log("err in the login=>", err)
@@ -92,7 +94,7 @@ const LoginFrom = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full hover:cursor-pointer bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500"
+                        className="w-full hover:cursor-pointer bg-black text-white py-3 px-4 rounded-md hover:bg-black focus:ring-2 focus:ring-black"
                     >
                         {isLoading ? buttonLoader : "Login"}
                     </button>

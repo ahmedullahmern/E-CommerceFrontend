@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AppRoutes } from '../../constant/constant';
-import { CartContext } from '../../context/AddCartContext';
 import PageLoader from '../Loader/PageLoader';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import ReviewCarousel from '../Reviews/rewievs';
 
 const ProductListComp = () => {
     const [products, setProducts] = useState([]);
-    const { addToCart } = useContext(CartContext);
     const [isLoader, setIsLoader] = useState(false);
-
+    const nav = useNavigate()
     useEffect(() => {
         setIsLoader(true);
         axios.get(AppRoutes.allproducts)
@@ -26,7 +25,7 @@ const ProductListComp = () => {
 
     const handleQuickView = (product) => {
         console.log("Quick View Clicked", product);
-        // Yahan pe modal ya detail view ka logic aa sakta hai
+
     };
 
     if (isLoader) {
@@ -34,7 +33,7 @@ const ProductListComp = () => {
     }
 
     return (
-        <div className=''>
+        <div className='bg-gray-100'>
             {/* Hero Banner */}
             <div className="relative h-[90vh] w-full">
                 <img
@@ -88,18 +87,26 @@ const ProductListComp = () => {
 
                             <div className="flex items-center justify-between mt-2">
                                 <span className="text-xl font-bold text-black">Rs. {product.price}</span>
-                                <button
-                                    onClick={() => addToCart(product)}
-                                    className="bg-blue-600 text-white text-xs px-4 py-2 rounded-md hover:bg-blue-700 transition"
-                                >
-                                    Add to Cart
-                                </button>
+                                <Link to={`/productDetail/${product._id}`}>
+                                    <button
+                                        className="bg-blue-600 text-white text-xs px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                                    >
+                                        Quick View
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
-
+            <div className='flex justify-center items-center mt-10'>
+                <Link to={"/allProduct"}>
+                    <button className='border border-black rounded-4xl text-black px-4 py-2 hover:bg-black hover:text-white hover:scale-105'>
+                        View All
+                    </button>
+                </Link>
+            </div>
+            <ReviewCarousel />
         </div>
 
     );

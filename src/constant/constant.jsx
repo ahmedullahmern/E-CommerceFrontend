@@ -6,6 +6,7 @@ export const Base_Url = devUrl
 export const AppRoutes = {
     signup: Base_Url + "auth/register",
     login: Base_Url + "auth/login",
+    getMyInfo: Base_Url + "users/myInfo",
     updateProfile: Base_Url + "auth/profile/update",
     forgetPassword: Base_Url + "auth/forgot-password",
     resetPassword: Base_Url + "auth/reset-password/:token",

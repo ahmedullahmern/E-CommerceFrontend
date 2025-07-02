@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../../constant/constant";
 import { toast } from 'react-toastify';
 import { AuthContext } from "../../../context/AuthContext";
@@ -9,6 +9,7 @@ import ButtonLoader from "../../Loader/ButtonLoader";
 
 const SignupForm = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const nav = useNavigate()
     const buttonLoader = ButtonLoader()
     const handleSignup = (e) => {
         e.preventDefault()
@@ -28,6 +29,7 @@ const SignupForm = () => {
                 setIsLoading(false)
                 console.log("res in login==>", res?.data?.data?.user)
                 toast.success("Your Account Created Successfully")
+                nav("/login")
             }).catch((err) => {
                 setIsLoading(false)
                 console.log("err in the login=>", err)
@@ -102,7 +104,7 @@ const SignupForm = () => {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full hover:cursor-pointer bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-500"
+                        className="w-full hover:cursor-pointer bg-black text-white py-3 px-4 rounded-md hover:bg-black focus:ring-2 focus:ring-black"
                     >
                         {isLoading ? buttonLoader : "Sign Up"}
                     </button>

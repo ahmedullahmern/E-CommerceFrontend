@@ -1,23 +1,39 @@
-
-import { EyeOff, } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import AddProductModal from '../Modale/AddProductModal';
-import PageLoader from '../Loader/PageLoader';
-import ConfirmDeleteModal from '../Modale/deleteProduct';
-import EditProductModal from '../Modale/editProductModal';
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie'
+import { EyeOff } from 'lucide-react';
+
+import AddProductModal from '../Modale/AddProductModal';
+import EditProductModal from '../Modale/editProductModal';
+import ConfirmDeleteModal from '../Modale/deleteProduct';
+import PageLoader from '../Loader/PageLoader';
 
 const ProductManagement = () => {
-
     const [products, setProducts] = useState([]);
-    const [IsLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
     const [editingProduct, setEditingProduct] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [showModal, setShowModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = () => {
+        setIsLoading(true);
+        axios.get("http://localhost:5000/api/product/allproducts")
+            .then(res => {
+                setProducts(res.data.data || []);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                toast.error("Failed to fetch products");
+                setIsLoading(false);
+            });
+    };
 
     const handleDeleteConfirm = async () => {
         try {
@@ -27,8 +43,7 @@ const ProductManagement = () => {
                 },
             });
             setProducts(prev => prev.filter(p => p._id !== productToDelete));
-            setShowDeleteModal(true);
-            toast.success("Product Deleted ")
+            toast.success("Product deleted");
             setShowDeleteModal(false);
         } catch (err) {
             console.error(err);
@@ -37,42 +52,17 @@ const ProductManagement = () => {
         }
     };
 
-
-    useEffect(() => {
-        setIsLoading(true)
-        axios.get("http://localhost:5000/api/product/allproducts")
-            .then(res => {
-                const fetchedProduct = res.data.data;
-                setProducts(fetchedProduct);
-                setIsLoading(false)
-            })
-            .catch(err => {
-                setIsLoading(false)
-                console.error(err);
-            });
-    }, []);
-
     return (
-        <div>
+        <div className="w-full">
+            {/* Modals */}
             <ConfirmDeleteModal
                 isOpen={showDeleteModal}
                 onClose={() => setShowDeleteModal(false)}
                 onConfirm={handleDeleteConfirm}
             />
-
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">Products</h2>
-                <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
-                    onClick={() => setShowModal(true)}
-
-                >
-                    Add Product
-                </button>
-            </div>
             <AddProductModal
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
+                isOpen={showAddModal}
+                onClose={() => setShowAddModal(false)}
                 setProducts={setProducts}
             />
             <EditProductModal
@@ -81,12 +71,27 @@ const ProductManagement = () => {
                 product={editingProduct}
                 setProducts={setProducts}
             />
-            <div className="bg-white shadow rounded-lg p-4">
-                {
-                    IsLoading ? <PageLoader center /> :
-                        <table className="w-full text-left border">
-                            <thead>
-                                <tr className="border-b">
+
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-gray-800">Products</h2>
+                <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    onClick={() => setShowAddModal(true)}
+                >
+                    Add Product
+                </button>
+            </div>
+
+            {/* Product Table */}
+            <div className="bg-white shadow rounded-lg p-4 overflow-x-auto">
+                {isLoading ? (
+                    <PageLoader center />
+                ) : (
+                    <div className="bg-white shadow rounded-lg p-4 overflow-x-auto">
+                        <table className="min-w-full text-left text-sm border-collapse">
+                            <thead className="bg-gray-100">
+                                <tr>
                                     <th className="p-2">Image</th>
                                     <th className="p-2">Name</th>
                                     <th className="p-2">Price</th>
@@ -98,11 +103,15 @@ const ProductManagement = () => {
                             <tbody>
                                 {products.map(product => (
                                     <tr key={product._id} className="border-b">
-                                        <img className='w-20 h-20' src={product.images[0]} alt={product.name} />
+                                        <td className="p-2">
+                                            <img src={product.images[0]} alt={product.name} className="w-16 h-16 object-cover rounded" />
+                                        </td>
                                         <td className="p-2">{product.name}</td>
                                         <td className="p-2">Rs. {product.price}</td>
                                         <td className="p-2">{product.stock}</td>
-                                        <EyeOff className="w-5 h-5 mb-7 cursor-pointer text-gray-600" />
+                                        <td className="p-2">
+                                            <EyeOff className="w-5 h-5 text-gray-600" />
+                                        </td>
                                         <td className="p-2 space-x-2">
                                             <button
                                                 onClick={() => {
@@ -115,7 +124,6 @@ const ProductManagement = () => {
                                             </button>
                                             <button
                                                 onClick={() => {
-                                                    console.log("productDelete==>", product._id);
                                                     setProductToDelete(product._id);
                                                     setShowDeleteModal(true);
                                                 }}
@@ -123,21 +131,16 @@ const ProductManagement = () => {
                                             >
                                                 Delete
                                             </button>
-
                                         </td>
                                     </tr>
                                 ))}
-                                {products.length === 0 && (
-                                    <tr>
-                                        <td colSpan="4" className="text-center text-gray-500 py-4">No products found.</td>
-                                    </tr>
-                                )}
                             </tbody>
                         </table>
-                }
+                    </div>
+                )}
             </div>
         </div>
-    )
+    );
 };
 
-export default ProductManagement
+export default ProductManagement;

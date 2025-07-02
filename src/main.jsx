@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import HeaderPage from './Pages/Header/HeaderPage.jsx'
 import CartProvider from './context/AddCartContext.jsx'
 import CartDrawerComp from './Components/Drawer/CartDrawerComp.jsx'
+import Footer from './Components/Footor/footor.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -17,7 +18,8 @@ createRoot(document.getElementById('root')).render(
         <AuthContextProvider>
           <HeaderPage />
           <App />
-          <ToastContainer />
+          <Footer />
+          <ToastContainer position="top-center" />
         </AuthContextProvider>
       </LoaderContextProvider>
       <CartDrawerComp />
