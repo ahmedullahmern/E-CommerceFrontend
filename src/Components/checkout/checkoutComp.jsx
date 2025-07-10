@@ -30,7 +30,7 @@ export default function CheckoutPage() {
 
         try {
             setLoading(true);
-            const { data } = await axios.post('http://localhost:5000/api/order/place', {
+            const { data } = await axios.post('https://e-commerce-backend-livid-one.vercel.app/api/order/place', {
                 items,
                 totalAmount,
                 address,

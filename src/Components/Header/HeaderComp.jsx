@@ -26,7 +26,7 @@ function HeaderComp() {
         toast.success("User Logout Successfully", {
             position: "top-center",
         });
-        nav('/home')
+        nav('/')
         setUser(null);
         setMenuOpen(false);
     };
@@ -43,7 +43,7 @@ function HeaderComp() {
         <nav className="bg-white dark:bg-gray-900 shadow border-b">
             <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/home" className="flex items-center space-x-2">
+                <Link to="/" className="flex items-center space-x-2">
                     <img
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8VqtwXGkZ4Xr5oz7mDJO1HcU0TLiIVXn3fnaTpk_emZDepXFb7-NDkg4Igj-1SLLiqC0&usqp=CAU"
                         className="h-[40px] w-[100px] object-cover rounded-full"

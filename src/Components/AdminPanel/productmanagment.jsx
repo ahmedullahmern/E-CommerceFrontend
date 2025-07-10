@@ -30,6 +30,7 @@ const ProductManagement = () => {
                 setIsLoading(false);
             })
             .catch(err => {
+                console.log("errorhahmed==>", err)
                 toast.error("Failed to fetch products");
                 setIsLoading(false);
             });

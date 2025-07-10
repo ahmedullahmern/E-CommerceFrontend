@@ -19,7 +19,7 @@ export default function OrderCard({ order }) {
         try {
             setIsLoader(true)
             const { data } = await axios.put(
-                `http://localhost:5000/api/order/cancel/${order._id}`,
+                `https://e-commerce-backend-livid-one.vercel.app/api/order/cancel/${order._id}`,
                 {},
                 {
                     headers: {

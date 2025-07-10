@@ -197,7 +197,7 @@ const ProductDetail = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        axios.get(`http://localhost:5000/api/product/product/${id}`)
+        axios.get(`https://e-commerce-backend-livid-one.vercel.app/api/product/product/${id}`)
             .then(res => {
                 const fetchedProduct = res.data.data;
                 setProduct(fetchedProduct);

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie'
 import { AuthContext } from '../../context/AuthContext';
+import StateManagment from './stateManagmenr';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -110,13 +111,6 @@ const AdminDashboard = () => {
         </div>
     );
 
-    const Dashboard = () => (
-        <div>
-            <h2 className="text-2xl font-bold mb-4">Dashboard Overview</h2>
-            <p>Yahan dashboard ka content ayega.</p>
-        </div>
-    );
-
     const Reports = () => (
         <div>
             <h2 className="text-2xl font-bold mb-4">Reports Section</h2>
@@ -133,7 +127,7 @@ const AdminDashboard = () => {
 
     const renderTabContent = () => {
         switch (activeTab) {
-            case 'dashboard': return <Dashboard />;
+            case 'dashboard': return <StateManagment />;
             case 'products': return <ProductManagement />;
             case 'orders': return <OrderDashboard />;
             case 'users': return <AdminUsersPage />;

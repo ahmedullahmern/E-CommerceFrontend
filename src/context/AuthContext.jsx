@@ -7,11 +7,14 @@ import PageLoader from "../Components/Loader/PageLoader";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true); // ⬅️ Loading flag
 
     useEffect(() => {
         const token = Cookies.get('token');
+        console.log("🛠️ AppRoutes.getMyInfo:", AppRoutes.getMyInfo);
+        
         if (token) {
             console.log("token==>", token);
             getUser();
@@ -21,6 +24,8 @@ export default function AuthContextProvider({ children }) {
     }, []);
 
     const getUser = () => {
+        console.log("👀 Request bhejne wala hu...");
+
         axios.get(AppRoutes.getMyInfo, {
             headers: {
                 Authorization: `Bearer ${Cookies.get("token")}`
@@ -31,6 +36,7 @@ export default function AuthContextProvider({ children }) {
         }).catch((err) => {
             console.log("errInGetUser==>", err);
             setUser(null);
+            setLoading(false);
         }).finally(() => {
             setLoading(false); // ⬅️ Always stop loading
         });

@@ -83,7 +83,7 @@ const ReviewCarousel = () => {
         const fetchReviews = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get("http://localhost:5000/api/product/reviews/featured");
+                const { data } = await axios.get("https://e-commerce-backend-livid-one.vercel.app/api/product/reviews/featured");
                 setReviews(data);
                 setLoading(false);
             } catch (err) {

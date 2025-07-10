@@ -1,7 +1,7 @@
+const proudUrl = "https://e-commerce-backend-livid-one.vercel.app/"
 const devUrl = "http://localhost:5000/"
-const proudUrl = "https://e-commerce-frontend-pi-taupe.vercel.app/"
 
-export const Base_Url = devUrl
+export const Base_Url = proudUrl
 
 export const AppRoutes = {
     signup: Base_Url + "auth/register",

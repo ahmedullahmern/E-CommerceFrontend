@@ -33,7 +33,7 @@ const LoginFrom = () => {
                 console.log("token he bhai", Cookies.get("token"))
                 setUser(res?.data?.data?.user)
                 toast.success("Login Successfully", { pauseOnHover: true })
-                nav("/home")
+                nav("/")
             }).catch((err) => {
                 setIsLoading(false)
                 console.log("err in the login=>", err)

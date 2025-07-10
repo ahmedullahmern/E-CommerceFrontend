@@ -64,7 +64,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/home' element={<ProductListPage />} />
+      <Route path='/' element={<ProductListPage />} />
       <Route path='/signup' element={<SignupFromPage />} />
       <Route path='/login' element={<LoginFromPage />} />
       <Route path='/admin' element={<AdminDashboard />} />

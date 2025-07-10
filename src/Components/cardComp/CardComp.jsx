@@ -16,7 +16,7 @@ export default function YourCartPage() {
                 <img className="w-20 " src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart" />
                 <h2 className="text-2xl font-semibold text-gray-700">Your Cart is Empty</h2>
                 <Link
-                    to="/home"
+                    to="/"
                     className="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 >
                     Continue Shopping
@@ -29,7 +29,7 @@ export default function YourCartPage() {
         <div className="max-w-4xl mx-auto px-4 py-6">
             <div className='flex justify-between'>
                 <h1 className="text-3xl font-bold mb-6 text-gray-800">Your Cart</h1>
-                <Link className="text-blue-500 hover:underline" to={'/home'}>Continue Shopping</Link>
+                <Link className="text-blue-500 hover:underline" to={'/'}>Continue Shopping</Link>
             </div>
             <div className="space-y-6">
                 {cart.map((item, index) => (
