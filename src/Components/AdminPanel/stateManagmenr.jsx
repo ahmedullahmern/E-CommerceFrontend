@@ -9,7 +9,7 @@ export default function StateManagment() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/admin/dashboard-summary", {
+    axios.get("https://e-commerce-backend-livid-one.vercel.app/api/admin/dashboard-summary", {
       headers: { Authorization: `Bearer ${Cookies.get("token")}` }
     })
       .then(res => {

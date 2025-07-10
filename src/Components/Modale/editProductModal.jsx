@@ -55,7 +55,7 @@ const EditProductModal = ({ isOpen, onClose, product, setProducts }) => {
         };
 
         try {
-            const res = await axios.put(`http://localhost:5000/api/admin/productUpdated/${product._id}`, payload, {
+            const res = await axios.put(`https://e-commerce-backend-livid-one.vercel.app/api/admin/productUpdated/${product._id}`, payload, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },

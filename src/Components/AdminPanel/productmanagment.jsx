@@ -24,7 +24,7 @@ const ProductManagement = () => {
 
     const fetchProducts = () => {
         setIsLoading(true);
-        axios.get("http://localhost:5000/api/product/allproducts")
+        axios.get("https://e-commerce-backend-livid-one.vercel.app/api/product/allproducts")
             .then(res => {
                 setProducts(res.data.data || []);
                 setIsLoading(false);
@@ -38,7 +38,7 @@ const ProductManagement = () => {
 
     const handleDeleteConfirm = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/admin/productDeleted/${productToDelete}`, {
+            await axios.delete(`https://e-commerce-backend-livid-one.vercel.app/api/admin/productDeleted/${productToDelete}`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                 },

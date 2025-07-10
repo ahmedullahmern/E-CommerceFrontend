@@ -20,7 +20,7 @@ export default function AdminOrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState(null);
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/admin/all", {
+        axios.get("https://e-commerce-backend-livid-one.vercel.app/api/admin/all", {
             headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         })
             .then(res => {
@@ -41,8 +41,8 @@ export default function AdminOrdersPage() {
         }));
         try {
             const url = field === "status"
-                ? "http://localhost:5000/api/admin/status/"
-                : "http://localhost:5000/api/admin/update-payment/";
+                ? "https://e-commerce-backend-livid-one.vercel.app/api/admin/status/"
+                : "https://e-commerce-backend-livid-one.vercel.app/api/admin/update-payment/";
             const body = field === "status" ? { status: value } : { paymentStatus: value };
             await axios.put(url + orderId, body, {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` }

@@ -28,7 +28,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         data.append("image", file); // key should match multer config
 
         try {
-            const res = await fetch("http://localhost:5000/api/product/upload", {
+            const res = await fetch("https://e-commerce-backend-livid-one.vercel.app/api/product/upload", {
                 method: "POST",
                 body: data
             });
@@ -73,7 +73,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         };
 
         try {
-            const res = await axios.post('http://localhost:5000/api/product/addproduct', payload, {
+            const res = await axios.post('https://e-commerce-backend-livid-one.vercel.app/api/product/addproduct', payload, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`
                 }

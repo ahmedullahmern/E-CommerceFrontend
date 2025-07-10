@@ -97,7 +97,7 @@ export default function AdminUsersPage() {
 
     const fetchUsers = () => {
         setLoading(true);
-        axios.get("http://localhost:5000/api/admin/users", {
+        axios.get("https://e-commerce-backend-livid-one.vercel.app/api/admin/users", {
             headers: { Authorization: `Bearer ${Cookies.get("token")}` }
         })
             .then(res => {
@@ -116,7 +116,7 @@ export default function AdminUsersPage() {
         if (!window.confirm(confirmMsg)) return;
 
         try {
-            await axios.patch(`http://localhost:5000/api/admin/user/${userId}/ban`, {
+            await axios.patch(`https://e-commerce-backend-livid-one.vercel.app/api/admin/user/${userId}/ban`, {
                 isBanned: !currentStatus
             }, {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` }
@@ -137,7 +137,7 @@ export default function AdminUsersPage() {
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this user?")) return;
         try {
-            await axios.delete(`http://localhost:5000/api/admin/user/${id}`, {
+            await axios.delete(`https://e-commerce-backend-livid-one.vercel.app/api/admin/user/${id}`, {
                 headers: { Authorization: `Bearer ${Cookies.get("token")}` }
             });
             toast.success("User deleted!");
@@ -200,7 +200,7 @@ export default function AdminUsersPage() {
                 onClose={() => setShowModal(false)}
                 onConfirm={async () => {
                     try {
-                        await axios.delete(`http://localhost:5000/api/admin/user/${selectedUserId}`, {
+                        await axios.delete(`https://e-commerce-backend-livid-one.vercel.app/api/admin/user/${selectedUserId}`, {
                             headers: { Authorization: `Bearer ${Cookies.get("token")}` }
                         });
                         toast.success("User deleted!");

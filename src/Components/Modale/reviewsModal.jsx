@@ -16,7 +16,7 @@ export default function ReviewModal({ productId, onClose, onSuccess }) {
         setLoading(true)
         try {
             const { data } = await axios.post(
-                `http://localhost:5000/api/product/product/${productId}/review`,
+                `https://e-commerce-backend-livid-one.vercel.app/api/product/product/${productId}/review`,
                 { rating, comment },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
