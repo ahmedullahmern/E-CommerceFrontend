@@ -128,7 +128,7 @@ const ReviewCarousel = () => {
 
     return (
         <div className="bg-gray-100 py-8 text-center relative overflow-hidden">
-            <h2 className="text-2xl font-bold mb-4 text-blue-900">Let customers speak for us</h2>
+            <h2 className="text-2xl font-bold mb-4 text-black">Let customers speak for us</h2>
             <div className="text-green-600 text-lg mb-1">⭐⭐⭐⭐⭐</div>
             <div className="text-sm text-gray-600 mb-6">from {reviews.length} reviews ✅</div>
 

@@ -3,10 +3,12 @@ import axios from "axios";
 import Cookies from "js-cookie"
 import OrderCard from "../../Components/orderComp/orderComp";
 import PageLoader from "../../Components/Loader/PageLoader";
+import { toast } from "react-toastify";
 
 export default function MyOrdersPage() {
     const [orders, setOrders] = useState([]);
     const [isLoader, setIsLoader] = useState(false);
+    const [error, setError] = useState("");
     const token = Cookies.get("token")
 
     useEffect(() => {
@@ -26,6 +28,7 @@ export default function MyOrdersPage() {
                 setError(err?.response?.data?.msg || "Something went wrong");
                 console.log("Error in fetching orders:", err);
                 setIsLoader(false)
+                toast.error(error)
             });
     }, []);
     if (isLoader) {
