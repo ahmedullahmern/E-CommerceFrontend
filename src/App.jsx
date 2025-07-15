@@ -51,6 +51,7 @@ import CheckoutPage from './Components/checkout/checkoutComp';
 import MyOrdersPage from './Pages/order/orderPage';
 import YourCartPage from './Components/cardComp/CardComp';
 import AllProductsPage from './Components/Product/allProduct';
+import ProfileSetting from './Components/Profile/ProfileSetting';
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -71,6 +72,7 @@ function App() {
       <Route path='/checkout' element={<CheckoutPage />} />
       <Route path='/myorders' element={<MyOrdersPage />} />
       <Route path='/allProduct' element={<AllProductsPage />} />
+      <Route path='/profilesetting' element={<ProfileSetting />} />
       <Route path='/cart' element={<YourCartPage />} />
       <Route path='/productDetail/:id' element={<ProductDetailPage />} />
       <Route path='*' element={<NotFoundPage />} />
