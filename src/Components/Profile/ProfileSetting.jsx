@@ -27,7 +27,7 @@ function ProfileSetting() {
 
     const handelConfirmDelimg = async () => {
         try {
-            const res = await axios.delete("http://localhost:5000/auth/profileimgdelete", {
+            const res = await axios.delete("https://e-commerce-backend-livid-one.vercel.app/auth/profileimgdelete", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -61,7 +61,7 @@ function ProfileSetting() {
         const fetchProfile = async () => {
             PsetLoading(true)
             try {
-                const res = await axios.get("http://localhost:5000/auth/profile", {
+                const res = await axios.get("https://e-commerce-backend-livid-one.vercel.app/auth/profile", {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
@@ -112,7 +112,7 @@ function ProfileSetting() {
             formData.append("email", email);
             if (avatar) formData.append("avatar", avatar);
 
-            const res = await axios.put("http://localhost:5000/auth/profile/update", formData, {
+            const res = await axios.put("https://e-commerce-backend-livid-one.vercel.app/auth/profile/update", formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data"
