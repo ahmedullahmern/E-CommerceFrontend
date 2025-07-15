@@ -13,7 +13,7 @@ export default function MyOrdersPage() {
 
     useEffect(() => {
         setIsLoader(true)
-        axios.get("http://localhost:5000/api/order/myorders", {
+        axios.get("https://e-commerce-backend-livid-one.vercel.app/api/order/myorders", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
