@@ -121,7 +121,7 @@ function ProfileSetting() {
             setUser(res.data.data)
             toast.success("Profile updated successfully");
         } catch (err) {
-            toast.error(err?.response?.data?.message || "Something went wrong");
+            toast.error(err?.response?.data?.message || "Email Is Already Use");
             console.error(err);
             toast.error("Something went wrong!");
         } finally {

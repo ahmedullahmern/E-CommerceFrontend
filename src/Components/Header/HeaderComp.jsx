@@ -170,7 +170,8 @@ function HeaderComp() {
                         <Link
                             to="/cart"
                             className="flex items-center gap-2 text-gray-700 dark:text-white"
-                            onClick={() => setMenuOpen(false)}
+                            // onClick={() => setMenuOpen(false)}
+                            // onClick={() => alert("hi") }
                         >
                             <FaShoppingCart />
                             Cart ({cartQty})
